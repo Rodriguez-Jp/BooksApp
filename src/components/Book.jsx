@@ -1,8 +1,6 @@
-const Book = ({ bookInfo }) => {
+const Book = ({ bookInfo, setBook }) => {
   //Extracts the book info
   const { bookName, autor, category, numberPages, readIn, review } = bookInfo;
-
-  console.log(bookInfo);
 
   return (
     <>
@@ -26,6 +24,23 @@ const Book = ({ bookInfo }) => {
         <p className="font-bold text-gray-500 text-lg mb-5">
           Review: <span className="text-black font-normal">{review}</span>
         </p>
+        <div className="flex justify-evenly">
+          <button
+            type="button"
+            className="bg-black text-white p-2 rounded-lg w-2/5 font-semibold text-xl"
+            onClick={() => {
+              setBook(bookInfo);
+            }}
+          >
+            Edit
+          </button>
+          <button
+            type="button"
+            className="bg-red-500 text-white p-2 rounded-lg w-2/5 font-semibold text-xl"
+          >
+            Delete
+          </button>
+        </div>
       </div>
     </>
   );

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Alert from "./Alert";
 
-const Form = ({ books, setBooks }) => {
+const Form = ({ books, setBooks, book, setBook }) => {
   const [bookName, setBookName] = useState("");
   const [autor, setAutor] = useState("");
   const [category, setCategory] = useState("");
@@ -9,11 +9,30 @@ const Form = ({ books, setBooks }) => {
   const [readIn, setReadIn] = useState("");
   const [review, setReview] = useState("");
   const [alert, setAlert] = useState({});
+  const [editing, setEditing] = useState(false);
 
+  //Function that generates a random id
   const generateId = () => {
     const id = crypto.randomUUID();
     return id;
   };
+
+  useEffect(() => {
+    //Validates if the books array has books
+    if (books.length === 0) {
+      return;
+    }
+
+    //If validation passes fill the form
+    setEditing(true);
+    const { bookName, autor, category, numberPages, readIn, review } = book;
+    setBookName(bookName);
+    setAutor(autor);
+    setCategory(category);
+    setNumberPages(numberPages);
+    setReadIn(readIn);
+    setReview(review);
+  }, [book]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -50,12 +69,28 @@ const Form = ({ books, setBooks }) => {
       numberPages,
       readIn,
       review,
-      id: generateId(),
     };
 
-    //Add the book to the main books state
-    setBooks([...books, bookObject]);
-    setAlert({ msg: "Book Added!", error: false });
+    //Checks if user is editing
+    if (editing) {
+      bookObject.id = book.id;
+      console.log(book);
+      const booksUpdated = books.map((bookState) =>
+        bookState.id === book.id ? bookObject : bookState
+      );
+
+      setBooks(booksUpdated);
+
+      setEditing(false);
+
+      //Shows the alert
+      setAlert({ msg: "Book edited!", error: false });
+    } else {
+      //Add the book to the main books state
+      bookObject.id = generateId();
+      setBooks([...books, bookObject]);
+      setAlert({ msg: "Book Added!", error: false });
+    }
 
     //After the operation, cleans the form
     setTimeout(() => {
@@ -66,6 +101,7 @@ const Form = ({ books, setBooks }) => {
       setReadIn("");
       setReview("");
       setAlert({});
+      setBook({});
     }, 1500);
   };
 
@@ -181,7 +217,7 @@ const Form = ({ books, setBooks }) => {
           <div className="flex justify-center mt-4">
             <input
               type="submit"
-              value="Save!"
+              value={editing ? "Edit review" : "Save Review"}
               className="font-semibold text-xl bg-red-500 p-2 w-full rounded-md text-white cursor-pointer hover:bg-red-600 transition-colors duration-200"
             />
           </div>
