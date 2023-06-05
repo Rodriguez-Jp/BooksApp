@@ -1,6 +1,15 @@
-const Book = ({ bookInfo, setBook }) => {
+const Book = ({ bookInfo, setBook, books, setBooks }) => {
   //Extracts the book info
   const { bookName, autor, category, numberPages, readIn, review } = bookInfo;
+
+  //Function to delete a book
+  const handleDelete = () => {
+    const prompt = confirm(`Would you like to delete ${bookName}?`);
+    if (prompt) {
+      const booksUpdated = books.filter((book) => book.id !== bookInfo.id);
+      setBooks(booksUpdated);
+    }
+  };
 
   return (
     <>
@@ -37,6 +46,7 @@ const Book = ({ bookInfo, setBook }) => {
           <button
             type="button"
             className="bg-red-500 text-white p-2 rounded-lg w-2/5 font-semibold text-xl"
+            onClick={handleDelete}
           >
             Delete
           </button>

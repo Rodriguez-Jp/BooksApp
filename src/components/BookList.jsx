@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import Book from "./Book";
 
-const BookList = ({ books, setBook }) => {
+const BookList = ({ books, setBook, setBooks }) => {
   return (
     <>
       <div className="block  md:w-2/5 w-full md:h-screen overflow-y-scroll [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']">
@@ -14,7 +14,13 @@ const BookList = ({ books, setBook }) => {
             </div>
             {books.map((bookInfo) => {
               return (
-                <Book bookInfo={bookInfo} key={bookInfo.id} setBook={setBook} />
+                <Book
+                  bookInfo={bookInfo}
+                  key={bookInfo.id}
+                  setBook={setBook}
+                  books={books}
+                  setBooks={setBooks}
+                />
               );
             })}
           </>

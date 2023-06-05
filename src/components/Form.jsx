@@ -18,20 +18,16 @@ const Form = ({ books, setBooks, book, setBook }) => {
   };
 
   useEffect(() => {
-    //Validates if the books array has books
-    if (books.length === 0) {
-      return;
+    if (Object.keys(book).length > 0) {
+      setEditing(true);
+      const { bookName, autor, category, numberPages, readIn, review } = book;
+      setBookName(bookName);
+      setAutor(autor);
+      setCategory(category);
+      setNumberPages(numberPages);
+      setReadIn(readIn);
+      setReview(review);
     }
-
-    //If validation passes fill the form
-    setEditing(true);
-    const { bookName, autor, category, numberPages, readIn, review } = book;
-    setBookName(bookName);
-    setAutor(autor);
-    setCategory(category);
-    setNumberPages(numberPages);
-    setReadIn(readIn);
-    setReview(review);
   }, [book]);
 
   const handleSubmit = (e) => {
@@ -74,14 +70,13 @@ const Form = ({ books, setBooks, book, setBook }) => {
     //Checks if user is editing
     if (editing) {
       bookObject.id = book.id;
-      console.log(book);
       const booksUpdated = books.map((bookState) =>
         bookState.id === book.id ? bookObject : bookState
       );
 
       setBooks(booksUpdated);
-
       setEditing(false);
+      setBook({});
 
       //Shows the alert
       setAlert({ msg: "Book edited!", error: false });
